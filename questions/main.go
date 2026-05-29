@@ -28,6 +28,9 @@ func main() {
 	fmt.Println(CountWords("go is very fast"))
 	fmt.Println(Join("go", "lang"))
 	fmt.Println(RelaceChars("banana", 'a', 'o'))
+	Duplicates("Programming")
+	fmt.Println(IsAnagram("silent", "listen"))
+	fmt.Println(IsAnagram("hello", "world"))
 }
 
 func PrintChars(chars string) {
@@ -139,23 +142,25 @@ func CountWords(str string) int {
 	return count
 }
 
-// func IsAnagram(a, b string) bool {
-// }
+func IsAnagram(a, b string) bool {
+	if len(a) != len(b) {
+		return false
+	}
 
-// Write a function that checks whether two strings are anagrams.
-// Function Signature
+	counts := make(map[rune]int)
 
-// func IsAnagram(a, b string) bool
+	for _, char := range a {
+		counts[char]++
+	}
+	for _, char := range b {
+		counts[char]--
 
-// Main
-
-// func main() {
-// 	fmt.Println(IsAnagram("listen", "silent"))
-// }
-
-// Output
-
-// true
+		if counts[char] < 0 {
+			return false
+		}
+	}
+	return true
+}
 
 func Join(a, b string) string {
 
@@ -163,28 +168,40 @@ func Join(a, b string) string {
 }
 
 func RelaceChars(str string, old, new rune) string {
+	var newChar []string
 
-	result := ""
-
-	// newStr := strings.Fields(str)
-
-	for i := 0; i <= len(str); i++ {
-
+	for _, char := range str {
+		if char == old {
+			char = new
+		}
+		newChar = append(newChar, string(char))
 	}
-	return result
+
+	return strings.Join(newChar, "")
+	// var newChar strings.Builder
+
+	// for _, char := range str {
+	// 	if char == old {
+	// 		newChar.WriteRune(new)
+	// 	} else {
+	// 		if char != old {
+	// 			newChar.WriteRune(char)
+	// 		}
+	// 	}
+	// }
+	// return newChar.String()
 }
 
-// Write a function that replaces all occurrences of one character with another.
-// Function Signature
+func Duplicates(str string) {
+	counts := make(map[rune]int)
 
-// func ReplaceChar(s string, old, new rune) string
+	for _, char := range str {
+		counts[char]++
+	}
 
-// Main
-
-// func main() {
-// 	fmt.Println(ReplaceChar("banana", 'a', 'o'))
-// }
-
-// Output
-
-// bonono
+	for char, count := range counts {
+		if count > 1 {
+			fmt.Println(string(char))
+		}
+	}
+}
